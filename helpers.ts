@@ -17,13 +17,13 @@ type UserData = {
 };
 
 const getUsers: Helper = (request, response) => {
-	response.send(usersData);
+	response.send(usersData as UserData[]);
 };
 
 const getUser: Helper = (request, response) => {
 	fsPromises.readFile(USERS_PATH, { encoding: 'utf8' }).then(users => {
-		const parsedUserData = JSON.parse(users);
-		const user = parsedUserData.find((user: UserData) => user._id === request.params.id);
+		const parsedUserData: UserData[] = JSON.parse(users);
+		const user = parsedUserData.find(user => user._id === request.params.id);
 		if (user) {
 			response.send(user);
 		} else {
