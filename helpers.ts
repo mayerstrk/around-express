@@ -27,7 +27,7 @@ const getUser: Helper = (request, response) => {
 		if (user) {
 			response.send(user);
 		} else {
-			response.status(400);
+			response.status(404);
 			response.send({ message: 'User not found' });
 		}
 	})
