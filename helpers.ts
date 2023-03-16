@@ -20,7 +20,7 @@ const getUsers: Helper = (request, response) => {
 	response.send(usersData);
 };
 
-const getUser: Helper = (request: Request, response: Response) => {
+const getUser: Helper = (request, response) => {
 	fsPromises.readFile(USERS_PATH, { encoding: 'utf8' }).then(users => {
 		const parsedUserData = JSON.parse(users);
 		const user = parsedUserData.find((user: UserData) => user._id === request.params.id);
