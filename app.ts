@@ -9,7 +9,8 @@ const app = express();
 app.use('/', routes);
 
 app.use((request, response) => {
-	response.status(Status.notFound).send({ message: 'Error: not found' });
+	response.status(Status.internalServerError);
+	response.send({ message: 'Error: unexpected request' });
 });
 
 app.listen(PORT, () => {

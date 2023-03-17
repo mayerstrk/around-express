@@ -1,5 +1,6 @@
 import path from 'node:path';
-import { helperBuilder } from './utils';
+import helperBuilder from './builders/helper-builder';
+import validateData, { validators } from './data/schemas/validators';
 
 const USERS_PATH = path.join(__dirname, 'data/users.json');
 const CARDS_PATH = path.join(__dirname, 'data/cards.json');
@@ -15,7 +16,7 @@ const getUsers = helperBuilder.getData({
 	filePath: USERS_PATH,
 	dataHandler({ data }) {
 		const parsedData: unknown = JSON.parse(data);
-		return parsedData;
+		return validateData(parsedData, validators.usersData);
 	},
 });
 
@@ -24,7 +25,7 @@ const getUser = helperBuilder.getData({
 	dataHandler({ data, request }) {
 		const parsedData: UserData[] = JSON.parse(data);
 		const userData: unknown = parsedData.find((user: UserData) => user._id === request?.params.id);
-		return userData;
+		return validateData(userData, validators.userData);
 	},
 });
 
@@ -32,7 +33,7 @@ const getCards = helperBuilder.getData({
 	filePath: CARDS_PATH,
 	dataHandler({ data }) {
 		const parsedData: unknown = JSON.parse(data);
-		return parsedData;
+		return validateData(parsedData, validators.cardData);
 	},
 });
 
