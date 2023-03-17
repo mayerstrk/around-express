@@ -8,30 +8,30 @@ const enum Status {
 }
 
 type GetDataArgs = {
-	request?: Request;
-	response: Response;
 	filePath: string;
 	settings?: { encoding: BufferEncoding };
-	dataHandler(data: string): unknown;
+	dataHandler({ data, request, response }: { data: string; request?: Request; response?: Response }): unknown;
 };
 
 const helperBuilder = {
 	getData(
-		{ response,
+		{
 			filePath,
 			dataHandler,
 		}: GetDataArgs,
 	) {
-		fsPromises.readFile(filePath, { encoding: 'utf8' })
-			.then(data => {
-				const parsedData = dataHandler(data);
-				response.status(Status.ok);
-				response.send(parsedData);
-			})
-			.catch(() => {
-				response.status(Status.internalServerError);
-				response.send({ message: 'unexpected error' });
-			});
+		return (request: Request, response: Response) => {
+			fsPromises.readFile(filePath, { encoding: 'utf8' })
+				.then(data => {
+					const parsedData = dataHandler({ data, request });
+					response.status(Status.ok);
+					response.send(parsedData);
+				})
+				.catch(() => {
+					response.status(Status.internalServerError);
+					response.send({ message: 'unexpected error' });
+				});
+		};
 	},
 };
 
