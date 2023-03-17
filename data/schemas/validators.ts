@@ -17,5 +17,5 @@ function validateData(data: unknown, validator: ValidateFunction) {
 	return data;
 }
 
-export { validators };
-export default validateData;
+export { validateData };
+export default validators;

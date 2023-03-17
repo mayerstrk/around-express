@@ -1,6 +1,6 @@
 import path from 'node:path';
 import helperBuilder from './builders/helper-builder';
-import validateData, { validators } from './data/schemas/validators';
+import validators, { validateData } from './data/schemas/validators';
 
 const USERS_PATH = path.join(__dirname, 'data/users.json');
 const CARDS_PATH = path.join(__dirname, 'data/cards.json');
