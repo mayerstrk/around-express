@@ -10,13 +10,11 @@ const validators = {
 };
 
 function validateData(data: unknown, validator: ValidateFunction) {
-	if (validator(data)) {
-		return data;
-	}
-
-	if (data) {
+	if (data && !validator(data)) {
 		throw new Error('Does not conform to required schema');
 	}
+
+	return data;
 }
 
 export { validators };

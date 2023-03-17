@@ -21,7 +21,7 @@ const getUsers = helperBuilder.getData({
 });
 
 const getUser = helperBuilder.getData({
-	filePath: USERS_PATH,
+	filePath: CARDS_PATH,
 	dataHandler({ data, request }) {
 		const parsedData: UserData[] = JSON.parse(data);
 		const userData: unknown = parsedData.find(user => user._id === request?.params.id);
