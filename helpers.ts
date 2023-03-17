@@ -1,11 +1,9 @@
-import { promises as fsPromises } from 'node:fs';
 import path from 'node:path';
 import { type Request, type Response } from 'express';
-
-import usersData from './data/users.json';
-import cardsData from './data/cards.json';
+import { helperBuilder } from './utils';
 
 const USERS_PATH = path.join(__dirname, 'data/users.json');
+const CARDS_PATH = path.join(__dirname, 'data/cards.json');
 
 type Helper = (request: Request, response: Response) => void;
 
@@ -17,28 +15,37 @@ type UserData = {
 };
 
 const getUsers: Helper = (request, response) => {
-	response.send(usersData as UserData[]);
+	helperBuilder.getData({
+		response,
+		filePath: USERS_PATH,
+		dataHandler(data) {
+			const parsedData: unknown = JSON.parse(data);
+			return parsedData;
+		},
+	});
 };
 
 const getUser: Helper = (request, response) => {
-	fsPromises.readFile(USERS_PATH, { encoding: 'utf8' }).then(users => {
-		const parsedUserData: UserData[] = JSON.parse(users);
-		const user = parsedUserData.find(user => user._id === request.params.id);
-		if (user) {
-			response.send(user);
-		} else {
-			response.status(404);
-			response.send({ message: 'User not found' });
-		}
-	})
-		.catch(() => {
-			response.status(500);
-			response.send({ message: 'Unexpected error' });
-		});
+	helperBuilder.getData({
+		response,
+		filePath: USERS_PATH,
+		dataHandler(data) {
+			const parsedData: UserData[] = JSON.parse(data);
+			const userData: unknown = parsedData.find((user: UserData) => user._id === request.params.id);
+			return userData;
+		},
+	});
 };
 
 const getCards: Helper = (request, response) => {
-	response.send(cardsData);
+	helperBuilder.getData({
+		response,
+		filePath: CARDS_PATH,
+		dataHandler(data) {
+			const parsedData: unknown = JSON.parse(data);
+			return parsedData;
+		},
+	});
 };
 
 export { getUsers, getUser, getCards };
