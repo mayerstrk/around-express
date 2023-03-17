@@ -24,7 +24,7 @@ const getUser = helperBuilder.getData({
 	filePath: USERS_PATH,
 	dataHandler({ data, request }) {
 		const parsedData: UserData[] = JSON.parse(data);
-		const userData: unknown = parsedData.find((user: UserData) => user._id === request?.params.id);
+		const userData: unknown = parsedData.find(user => user._id === request?.params.id);
 		return validateData(userData, validators.userData);
 	},
 });
