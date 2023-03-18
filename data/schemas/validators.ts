@@ -6,16 +6,16 @@ const ajv = new Ajv();
 const validators = {
 	userData: ajv.compile(userSchema),
 	usersData: ajv.compile(usersSchema),
-	cardData: ajv.compile(cardsSchema),
+	cardsData: ajv.compile(cardsSchema),
 };
 
-function validateData(data: unknown, validator: ValidateFunction) {
-	if (data && !validator(data)) {
-		throw new Error('Does not conform to required schema');
+function validateSchema(data: unknown, validator: ValidateFunction) {
+	if (!validator(data)) {
+		return false;
 	}
 
-	return data;
+	return true;
 }
 
-export { validateData };
+export { validateSchema };
 export default validators;
